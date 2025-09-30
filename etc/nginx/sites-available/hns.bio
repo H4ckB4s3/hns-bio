@@ -1,0 +1,73 @@
+# Redirect all HTTP traffic to HTTPS
+server {
+    listen 80;
+    listen [::]:80;
+    server_name hns.bio *.hns.bio;
+    return 301 https://$host$request_uri;
+}
+
+# HTTPS for main domain (hns.bio) -> search.html
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name hns.bio;
+
+    ssl_certificate /etc/letsencrypt/live/hns.bio/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hns.bio/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+
+    root /var/www/hns.bio;
+    index search.html;
+
+    location / {
+        try_files $uri $uri/ @htmlext;
+    }
+
+    location ~ \.html$ {
+        try_files $uri =404;
+    }
+
+    location @htmlext {
+        rewrite ^(.*)$ $1.html last;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html { internal; }
+}
+
+# HTTPS for subdomains (*.hns.bio) -> index.html
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name *.hns.bio;
+
+    ssl_certificate /etc/letsencrypt/live/hns.bio/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hns.bio/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+
+    root /var/www/hns.bio;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ @htmlext;
+    }
+
+    location ~ \.html$ {
+        try_files $uri =404;
+    }
+
+    location @htmlext {
+        rewrite ^(.*)$ $1.html last;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html { internal; }
+}
