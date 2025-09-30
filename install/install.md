@@ -25,8 +25,8 @@ sudo chmod -R 755 /var/www
 
 Ensure the following DNS records are configured for your domain:
 
-- **A record**: `nostr.name` pointing to your server's IP address.
-- **Wildcard A record**: `*.nostr.name` pointing to your server's IP address.
+- **A record**: `hns.bio` pointing to your server's IP address.
+- **Wildcard A record**: `*.hns.bio` pointing to your server's IP address.
 
 ## 4. Obtain Let's Encrypt Wildcard Certificate
 
@@ -146,7 +146,7 @@ echo "<html><body><h1>Welcome to hns.bio!</h1></body></html>" > /var/www/hns.bio
 ## 9. Verify Setup
 
 - Visit `https://hns.bio` in your browser to confirm the test page loads with SSL.
-- Test a subdomain like `https://test.nostr.name` to ensure the wildcard SSL works.
+- Test a subdomain like `https://test.hns.bio` to ensure the wildcard SSL works.
 
 ## Important Files and Locations
 
