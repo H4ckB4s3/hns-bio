@@ -125,7 +125,7 @@ server {
 
 Save and exit (`Ctrl+X`, then `Y`, then `Enter`).
 
-## 7. Enable the Site
+## 6. Enable the Site
 
 Enable the Nginx configuration and restart the server.
 
@@ -135,7 +135,7 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-## 8. Create a Test HTML File
+## 7. Create a Test HTML File
 
 Create a simple test page to verify the setup.
 
@@ -143,7 +143,7 @@ Create a simple test page to verify the setup.
 echo "<html><body><h1>Welcome to hns.bio!</h1></body></html>" > /var/www/hns.bio/index.html
 ```
 
-## 9. Verify Setup
+## 8. Verify Setup
 
 - Visit `https://hns.bio` in your browser to confirm the test page loads with SSL.
 - Test a subdomain like `https://test.hns.bio` to ensure the wildcard SSL works.
