@@ -1,0 +1,121 @@
+# Redirect all HTTP traffic to HTTPS
+server {
+    listen 80;
+    listen [::]:80;
+    server_name hns.bio *.hns.bio;
+    return 301 https://$host$request_uri;
+}
+
+# HTTPS for main domain (hns.bio) -> search.html
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name hns.bio;
+
+    ssl_certificate /etc/letsencrypt/live/hns.bio/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hns.bio/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+
+    root /var/www/hns.bio;
+    index search.html;
+
+    location / {
+        try_files $uri $uri/ @htmlext;
+    }
+
+    location ~ \.html$ {
+        try_files $uri =404;
+    }
+
+    location @htmlext {
+        rewrite ^(.*)$ $1.html last;
+    }
+
+    # HIP-0002 Wallet discovery endpoints - UPDATED PORT
+    location ~ ^/\.well-known/wallets/(?<symbol>[^/]+)$ {
+        proxy_pass http://127.0.0.1:3001/.well-known/wallets/$symbol;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location = /.well-known/wallets {
+        proxy_pass http://127.0.0.1:3001/.well-known/wallets;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html { internal; }
+}
+
+# HTTPS for subdomains (*.hns.bio) -> index.html with HIP-0002 support
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name *.hns.bio;
+
+    ssl_certificate /etc/letsencrypt/live/hns.bio/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hns.bio/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+
+    root /var/www/hns.bio;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ @htmlext;
+    }
+
+    location ~ \.html$ {
+        try_files $uri =404;
+    }
+
+    location @htmlext {
+        rewrite ^(.*)$ $1.html last;
+    }
+
+    # NIP-05 endpoint (backward compatibility) - UPDATED PORT
+    location = /.well-known/nostr.json {
+        proxy_pass http://127.0.0.1:3001/nostr.json;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # HIP-0002 Wallet discovery endpoints for subdomains - UPDATED PORT
+    location ~ ^/\.well-known/wallets/(?<symbol>[^/]+)$ {
+        proxy_pass http://127.0.0.1:3001/.well-known/wallets/$symbol;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location = /.well-known/wallets {
+        proxy_pass http://127.0.0.1:3001/.well-known/wallets;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html { internal; }
+}
