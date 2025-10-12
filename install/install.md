@@ -36,6 +36,12 @@ Run the following command to obtain a wildcard SSL certificate.
 sudo certbot certonly --manual --preferred-challenges=dns --agree-tos --no-eff-email -d hns.bio -d *.hns.bio --register-unsafely-without-email
 ```
 
+Letsencrypt renewal:
+```bash
+sudo certbot certonly --manual --preferred-challenges dns \
+  -d "*.hns.bio" -d hns.bio
+```
+
 Follow the prompts to add a TXT records to your DNS when requested.
 
 ## 5. Create Nginx Configuration
