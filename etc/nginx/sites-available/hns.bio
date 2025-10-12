@@ -8,17 +8,33 @@ server {
 
 # HTTPS for main domain (hns.bio) -> search.html
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name hns.bio;
 
     ssl_certificate /etc/letsencrypt/live/hns.bio/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/hns.bio/privkey.pem;
+    
+    # Add chain certificate for OCSP stapling
+    ssl_trusted_certificate /etc/letsencrypt/live/hns.bio/chain.pem;
 
+    # Modern SSL configuration
     ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
-    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
     ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+    
+    # Enable OCSP stapling
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    
+    # Security headers
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 
     root /var/www/hns.bio;
     index search.html;
@@ -35,7 +51,7 @@ server {
         rewrite ^(.*)$ $1.html last;
     }
 
-    # HIP-0002 Wallet discovery endpoints - UPDATED PORT
+    # HIP-0002 Wallet discovery endpoints
     location ~ ^/\.well-known/wallets/(?<symbol>[^/]+)$ {
         proxy_pass http://127.0.0.1:3001/.well-known/wallets/$symbol;
         proxy_http_version 1.1;
@@ -60,17 +76,33 @@ server {
 
 # HTTPS for subdomains (*.hns.bio) -> index.html with HIP-0002 support
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name *.hns.bio;
 
     ssl_certificate /etc/letsencrypt/live/hns.bio/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/hns.bio/privkey.pem;
+    
+    # Add chain certificate for OCSP stapling
+    ssl_trusted_certificate /etc/letsencrypt/live/hns.bio/chain.pem;
 
+    # Modern SSL configuration
     ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
-    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
     ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+    
+    # Enable OCSP stapling
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    
+    # Security headers
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 
     root /var/www/hns.bio;
     index index.html;
@@ -87,7 +119,7 @@ server {
         rewrite ^(.*)$ $1.html last;
     }
 
-    # NIP-05 endpoint (backward compatibility) - UPDATED PORT
+    # NIP-05 endpoint (backward compatibility)
     location = /.well-known/nostr.json {
         proxy_pass http://127.0.0.1:3001/nostr.json;
         proxy_http_version 1.1;
@@ -97,7 +129,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    # HIP-0002 Wallet discovery endpoints for subdomains - UPDATED PORT
+    # HIP-0002 Wallet discovery endpoints for subdomains
     location ~ ^/\.well-known/wallets/(?<symbol>[^/]+)$ {
         proxy_pass http://127.0.0.1:3001/.well-known/wallets/$symbol;
         proxy_http_version 1.1;
