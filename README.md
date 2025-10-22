@@ -28,6 +28,12 @@ TXT record prefixes standardize how information is structured and interpreted, m
 ---
 
 ## List of Prefixes
+### Layout
+| **Prefix**                   | **Purpose**                      | **Example**                |
+|------------------------------|----------------------------------|----------------------------|
+| `pfp:<url>`                  | Profile picture URL              | `pfp:example.com/img.png`  |
+| `bgcolor:<hex>`              | Background color in HEX format   | `bgcolor:ffffff`           |
+| `bg:<url>`                   | Background image URL             | `bg:example.com/bg_img.png`|
 
 ### Communication
 | **Prefix**                   | **Purpose**                      | **Example**                |
@@ -67,13 +73,6 @@ TXT record prefixes standardize how information is structured and interpreted, m
 |------------------------------|----------------------------------|----------------------------|
 | `yt:<username>`              | YouTube channel/URL              | `yt:username`              |
 | `rumble:<channelname>`       | Rumble channel/URL	          | `rumble:channelname`       |
-
-### Layout
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `pfp:<url>`                  | Profile picture URL              | `pfp:example.com/img.png`  |
-| `bgcolor:<hex>`              | Background color in HEX format   | `bgcolor:ffffff`           |
-| `bg:<url>`                   | Background image URL             | `bg:example.com/bg_img.png`|
 
 ### Wallet
 | **Prefix**                   | **Purpose**                      | **Example**                |
