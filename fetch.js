@@ -76,8 +76,7 @@ async function setDynamicCSS(txtRecords) {
 
 async function fetchAndProcessTXTRecords(domain) {
     const url = `https://resolve.shakestation.io/dns-query?name=${domain}&type=TXT`;
-        // alternative node: const url = `https://doh.hnsdns.com/dns-query?name=${domain}&type=TXT`;
-        // alternative node: const url = `https://hnsns.net/dns-query?name=${domain}&type=TXT`;
+        // alternative node: const url = `https://api.web3dns.net/?name=${domain}&type=TXT`;
         
     console.log("Fetch URL:", url);
 
