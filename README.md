@@ -84,7 +84,7 @@ TXT record prefixes standardize how information is structured and interpreted, m
 | `eth:<address>`              | Ethereum wallet address          | `eth:eth_address`          |
 
 # Compatible wallet addresses:
-btc,ln,hns,eth,xmr,zec,bat,aave,ada,algo,apt,atom,avax,bch,bgb,bnb,chainlink,cro,dai,doge,dot,ena,etc,fil,gt,hbar,hype,icp,jup,kas,leo,ltc,mnt,near,okb,om,ondo,op,pepe,pi,pol,render,shib,sol,sui,tao,tia,ton,trx,uni,usdc,usde,usdt,vet,xlm,xrp
+btc, ln, hns, eth, xmr, zec, bat, aave, ada, algo, apt, atom, avax, bch, bgb, bnb, chainlink, cro, dai, doge, dot, ena, etc, fil, gt, hbar, hype, icp, jup, kas, leo, ltc, mnt, near, okb, om, ondo, op, pepe, pi, pol, render, shib, sol, sui, tao, tia, ton, trx, uni, usdc, usde, usdt, vet, xlm, xrp
 
 ### External
 | **Prefix**                   | **Purpose**                      | **Example**                |
