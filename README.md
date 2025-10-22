@@ -28,6 +28,7 @@ TXT record prefixes standardize how information is structured and interpreted, m
 ---
 
 ## List of Prefixes
+
 ### Layout
 | **Prefix**                   | **Purpose**                      | **Example**                |
 |------------------------------|----------------------------------|----------------------------|
