@@ -15,7 +15,7 @@ TXT record prefixes standardize how information is structured and interpreted, m
 
 ## Setup Instructions
 
-1. Navigate to your domain manager (e.g., [Namebase](https://namebase.io)).
+1. Navigate to your domain manager (e.g., [Shakestation](https://shakestation.io), [Namebase](https://namebase.io), ...).
 2. Add a new TXT record with the following configuration:
    - **Type**: TXT  
    - **Name**: `@`  
@@ -29,36 +29,49 @@ TXT record prefixes standardize how information is structured and interpreted, m
 
 ## List of Prefixes
 
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `pfp:<url>`                  | Profile picture URL              | `pfp:example.com/img.png`  |
-| `mail:<email>`               | Email address                    | `mail:example@example.com` |
-| `link:<url>`                 | Redirect to a webpage            | `link:example.com`         |
-| `onion:<url>`                | Onion address                    | `onion:example`            |
-| `pk:<url>`                   | pkdns page                       | `pk:example`               |
-| `gh:<username>`              | GitHub profile/repo              | `gh:username`              |
-
-### Social
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `x:<username>`               | X (formerly Twitter) profile    | `x:username`                |
-| `nostr:<npub>`               | Nostr public key                | `nostr:npub123`             |
-| `bsky:<username>`            | Bluesky profile                 | `bsky:username`             |
-| `ig:<username>`              | Instagram profile               | `ig:username`               |
-| `fb:<username>`              | Facebook profile                | `fb:username`               |
-
 ### Communication
 | **Prefix**                   | **Purpose**                      | **Example**                |
 |------------------------------|----------------------------------|----------------------------|
+| `mail:<email>`               | Email address                    | `mail:example@example.com` |
+| `tel:<number>`               | Phone number                     | `tel:+1234567890`          |
 | `tb:<username>`              | Thunderbolt identifier           | `tb:username`              |
+| `sx:<contactcode>`           | SimpleX Chat	                  | `sx:contactcode`           |
+| `matrix:<username>`          | Matrix username                  | `matrix:username`          |
 | `sn:<number>`                | Signal profile                   | `sn:+1234567890`           |
 | `wa:<number>`                | WhatsApp                         | `wa:+1234567890`           |
 | `tg:<username>`              | Telegram                         | `tg:username`              |
 | `tel:<number>`               | Phone number                     | `tel:+1234567890`          |
 
+
+### Web
+| **Prefix**                   | **Purpose**                      | **Example**                |
+|------------------------------|----------------------------------|----------------------------|
+| `link:<url>`                 | Redirect to a webpage            | `link:example.com`         |
+| `ens:<url>`                  | Ethereum Name Service            | `ens:vitalik.eth`          |
+| `onion:<url>`                | Onion address                    | `onion:example`            |
+| `ipfs:<url>`                 | IPFS content                     | `ipfs:QmExample            |
+| `pk:<url>`                   | pkdns page                       | `pk:example`               |
+
+### Social
+| **Prefix**                   | **Purpose**                      | **Example**                |
+|------------------------------|----------------------------------|----------------------------|
+| `x:<username>`               | X (formerly Twitter) profile     | `x:username`               |
+| `nostr:<npub>`               | Nostr public key                 | `nostr:npub123`            |
+| `gh:<username>`              | GitHub profile/repo              | `gh:username`              |
+| `bsky:<username>`            | Bluesky profile                  | `bsky:username`            |
+| `ig:<username>`              | Instagram profile                | `ig:username`              |
+| `fb:<username>`              | Facebook profile                 | `fb:username`              |
+
+### Media
+| **Prefix**                   | **Purpose**                      | **Example**                |
+|------------------------------|----------------------------------|----------------------------|
+| `yt:<username>`              | YouTube channel/URL              | `yt:username`              |
+| `rumble:<channelname>`       | Rumble channel/URL	          | `rumble:channelname`       |
+
 ### Layout
 | **Prefix**                   | **Purpose**                      | **Example**                |
 |------------------------------|----------------------------------|----------------------------|
+| `pfp:<url>`                  | Profile picture URL              | `pfp:example.com/img.png`  |
 | `bgcolor:<hex>`              | Background color in HEX format   | `bgcolor:ffffff`           |
 | `bg:<url>`                   | Background image URL             | `bg:example.com/bg_img.png`|
 
@@ -69,6 +82,9 @@ TXT record prefixes standardize how information is structured and interpreted, m
 | `hns:<address>`              | Handshake wallet address         | `hns:hns_address`          |
 | `xmr:<address>`              | Monero wallet address            | `xmr:xmr_address`          |
 | `eth:<address>`              | Ethereum wallet address          | `eth:eth_address`          |
+
+# Compatible wallet addresses:
+btc,ln,hns,eth,xmr,zec,bat,aave,ada,algo,apt,atom,avax,bch,bgb,bnb,chainlink,cro,dai,doge,dot,ena,etc,fil,gt,hbar,hype,icp,jup,kas,leo,ltc,mnt,near,okb,om,ondo,op,pepe,pi,pol,render,shib,sol,sui,tao,tia,ton,trx,uni,usdc,usde,usdt,vet,xlm,xrp
 
 ### External
 | **Prefix**                   | **Purpose**                      | **Example**                |
