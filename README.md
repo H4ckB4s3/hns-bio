@@ -49,7 +49,7 @@ TXT record prefixes standardize how information is structured and interpreted, m
 | `link:<url>`                 | Redirect to a webpage            | `link:example.com`         |
 | `ens:<url>`                  | Ethereum Name Service            | `ens:vitalik.eth`          |
 | `onion:<url>`                | Onion address                    | `onion:example`            |
-| `ipfs:<url>`                 | IPFS content                     | `ipfs:QmExample            |
+| `ipfs:<url>`                 | IPFS content                     | `ipfs:QmExample`           |
 | `pk:<url>`                   | pkdns page                       | `pk:example`               |
 
 ### Social
