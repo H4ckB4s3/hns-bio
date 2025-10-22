@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HNS.BIO | Decentralized profile</title>
+    <meta name="description" content="Create a sovereign, decentralized profile using TXT records (DNS/HNS). No code. Supports socials, wallets, and custom layouts.">
+    <!-- Open Graph -->
+    <meta property="og:title" content="HNS.BIO | Decentralized profile">
+    <meta property="og:description" content="Build a censorship-resistant profile with TXT records. Your identity, on your terms.">
+    <meta property="og:url" content="https://hns.bio">
+    <meta property="og:type" content="website">
+    <!-- <meta property="og:image" content="https://hns.bio/img/og-image.png"> -->
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="HNS.BIO | Decentralized profile">
+    <meta name="twitter:description" content="Build a censorship-resistant profile with TXT records. Your identity, on your terms.">
+    <link rel="shortcut icon" href="/img/hns.ico" type="image/x-icon">
+    <style>
+    /* Basic Reset */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Nitti Light", Helvetica, sans-serif;
+    }
+
+    body, html {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        color: #333;
+    }
+
+    /* Search Container Styles */
+    .search-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 222px;
+    }
+
+    .logo-container {
+        text-align: center;
+    }
+
+    .dprofile-logo {
+        font-size: 2.8rem;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .search-box {
+        display: flex;
+        flex-grow: 1;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-box input {
+        flex-grow: 1;
+        border: none;
+        padding: 10px 20px;
+        outline: none;
+        font-size: 1rem;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .search-box button {
+        background-color: #000;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .search-box button:hover {
+        background-color: #333333;
+    }
+
+    /* Linktree Container - Updated for proper scrolling */
+    #linktree-container {
+        display: none;
+        width: 100%;
+        min-height: 100vh;
+        padding: 20px;
+        text-align: center;
+        background-color: #121212;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        flex-direction: column;
+        align-items: center;
+        color: #ffffff;
+        position: relative;
+        overflow-y: auto;
+    }
+
+    /* Profile Section - Ensured visibility */
+    .profile {
+        text-align: center;
+        margin: 40px 0 20px;
+        padding-top: 20px;
+    }
+
+    .profile img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 4px solid #ffffff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .profile img:hover {
+        transform: scale(1.1);
+    }
+
+    /* Links Section - Consistent width */
+    .links {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: linear-gradient(135deg, #007bff, #1e90ff);
+        padding: 15px;
+        border-radius: 50px;
+        border: none;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .link i {
+        margin-right: 10px;
+        font-size: 1.3rem;
+    }
+
+    .link img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .link:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg, #1e90ff, #00aaff);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Currency Buttons - 3 per row */
+    .currency-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+        width: 100%;
+        max-width: 180px;
+    }
+
+    .currency-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #007bff, #1e90ff);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .currency-button img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .currency-button:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg, #1e90ff, #00aaff);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Go Back Button - Visible and styled */
+    .go-back-button-container {
+        margin: 30px 0;
+        text-align: center;
+        position: relative;
+        z-index: 5;
+    }
+
+    .go-back-button {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+        color: #ffffff;
+        background: rgba(30, 144, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .go-back-button:hover {
+        background: rgba(30, 144, 255, 0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer - Fixed at bottom */
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 9px 0;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #999;
+        background: rgba(0, 0, 0, 0.0);
+        backdrop-filter: blur(7px);
+        z-index: 10;
+    }
+
+    footer a {
+        color: #aaa;
+        text-decoration: none;
+        position: relative;
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    footer a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: #aaa;
+        transition: width 0.3s ease;
+    }
+
+    footer a:hover::after {
+        width: 100%;
+    }
+
+    /* Current year in footer */
+    #current-year {
+        display: inline-block;
+    }
+</style>
+	</head>
+	<body>
+	    <div class="search-container" id="search-container">
+	        <div class="logo-container">
+	            <div class="dprofile-logo">HNS.BIO</div>
+	            <!---<div class="subtitle">Sovereign DID</div>-->
+	        </div>
+	        <div class="search-box">
+	            <input type="text" id="domain-input" placeholder="Enter TLD or SLD" autofocus>
+	            <button id="go-button">Go</button>
+	        </div>
+	    </div>
+	    <div id="linktree-container">
+	        <div class="profile" id="profile"></div>
+	        <div class="links" id="links"></div>
+	        <div class="currency-buttons" id="currency-buttons"></div>
+	        <div class="go-back-button-container">
+	            <button class="go-back-button" id="go-back-button">Go Back</button>
+	        </div>
+	    </div>
+	    <!-- Footer -->
+	    <footer>
+	        &copy; <span id="current-year">2025</span> <a href="/">HNS.BIO</a> | <a href="https://github.com/H4ckB4s3/hns-bio" target="_blank">GitHub</a> | <a href="/prefix.html" target="_blank">Setup your own BIO</a>
+	    </footer>
+<script>
+    const searchContainer = document.getElementById('search-container');
+    const linktreeContainer = document.getElementById('linktree-container');
+    const domainInput = document.getElementById('domain-input');
+    const goButton = document.getElementById('go-button');
+    const goBackButton = document.getElementById('go-back-button');
+    const defaultFavicon = '/img/hns.ico';
+    let currentFavicon = null;
+
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    async function fetchTXTRecords(domain) {
+        document.title = domain;
+
+        // First, fetch and display the root domain's records
+        const txtRecords = await fetchAndProcessTXTRecords(domain);
+
+        if (txtRecords) {
+            // Process and display the fetched records
+            processTXTRecords(txtRecords);
+
+            // Now process any external records asynchronously
+            txtRecords.forEach(record => {
+                if (record.startsWith("ext:")) {
+                    const externalDomain = record.split("ext:")[1];
+                    fetchAndProcessTXTRecords(externalDomain).then(processTXTRecords);
+                }
+            });
+
+            // Show linktree container and hide search container
+            searchContainer.style.display = 'none';
+            linktreeContainer.style.display = 'flex';
+        }
+    }
+
+    async function fetchAndProcessTXTRecords(domain) {
+        const url = `https://resolve.shakestation.io/dns-query?name=${domain}&type=TXT`;
+        //const url = `https://doh.hnsdns.com/dns-query?name=${domain}&type=TXT`;
+        //const url = 'https://jdoh.web3dns.net/?name=${domain}&type=TXT';
+        //const url = `https://hnsns.net/dns-query?name=${domain}&type=TXT`;
+        console.log("Fetch URL:", url);
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: { 'Accept': 'application/dns-json' }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log("DNS Response:", data);
+
+            if (data.Answer && data.Answer.length > 0) {
+                return data.Answer
+                    .filter(record => record.type === 16)
+                    .map(record => record.data.replace(/"/g, ''));
+            } else {
+                console.error("No TXT records found in DNS response.");
+                alert("No TXT records found for this domain.");
+                return null;
+            }
+        } catch (error) {
+            console.error("Fetch Error:", error);
+            alert(`An error occurred while fetching TXT records: ${error.message}`);
+            return null;
+        }
+    }
+
+    function setDynamicFavicon(faviconUrl) {
+        let faviconLink = document.querySelector('link[rel="shortcut icon"]');
+        if (!faviconLink) {
+            faviconLink = document.createElement('link');
+            faviconLink.rel = 'shortcut icon';
+            faviconLink.type = 'image/x-icon';
+            document.head.appendChild(faviconLink);
+        }
+        faviconLink.href = faviconUrl;
+        currentFavicon = faviconUrl;
+    }
+
+    function resetToDefaults() {
+        // Reset favicon
+        setDynamicFavicon(defaultFavicon);
+        
+        // Reset other UI elements
+        document.title = "Dprofile: Self Sovereign DID";
+        searchContainer.style.display = 'flex';
+        linktreeContainer.style.display = 'none';
+        linktreeContainer.style.backgroundImage = '';
+        linktreeContainer.style.backgroundColor = '#121212';
+        document.getElementById('profile').innerHTML = '';
+        document.getElementById('links').innerHTML = '';
+        document.getElementById('currency-buttons').innerHTML = '';
+        domainInput.value = '';
+    }
+
+    // Helper function to format phone numbers
+    function formatPhoneNumber(phone) {
+        if (phone.startsWith('+')) {
+            // Keep the + if it already exists
+            return phone;
+        } else if (phone.startsWith('00')) {
+            // Replace 00 with +
+            return '+' + phone.slice(2);
+        } else if (/^\d/.test(phone)) {
+            // Prepend + if it starts with a digit
+            return '+' + phone;
+        }
+        return phone; // Return unchanged if none of the conditions apply
+    }
+
+    function processTXTRecords(txtRecords) {
+        const profileDiv = document.getElementById('profile');
+        const linksDiv = document.getElementById('links');
+        const currencyButtonsDiv = document.getElementById('currency-buttons');
+        let bgSet = false;
+        const currencies = { 
+            btc: null, ln: null, hns: null, eth: null, xmr: null, zec: null, bat: null,
+            aave: null, ada: null, algo: null, apt: null, atom: null, avax: null, 
+            bch: null, bgb: null, bnb: null, chainlink: null, cro: null, dai: null, 
+            doge: null, dot: null, ena: null, etc: null, fil: null, gt: null, 
+            hbar: null, hype: null, icp: null, jup: null, kas: null, leo: null, 
+            ltc: null, mnt: null, near: null, okb: null, om: null, ondo: null, 
+            op: null, pepe: null, pi: null, pol: null, render: null, shib: null, 
+            sol: null, sui: null, tao: null, tia: null, ton: null, trx: null, 
+            uni: null, usdc: null, usde: null, usdt: null, vet: null, xlm: null, xrp: null 
+        };
+
+        txtRecords.forEach(record => {
+            const [key, value] = record.split(':');
+            let formattedValue = value;
+
+            // Format phone number for 'tel' key
+            if (key === 'tel') {
+                formattedValue = formatPhoneNumber(value);
+            }
+
+            switch (key) {
+                case 'pfp':
+                    profileDiv.innerHTML = `<img src="https://${value}" alt="Profile Picture">`;
+                    break;
+                case 'bg':
+                    if (!bgSet) {
+                        console.log("Setting background image:", value);
+                        linktreeContainer.style.backgroundImage = `url(https://${value})`;
+                        linktreeContainer.style.backgroundSize = 'cover';
+                        linktreeContainer.style.backgroundPosition = 'center';
+                        bgSet = true;
+                    }
+                    break;
+                case 'bgcolor':
+                    if (!bgSet) {
+                        console.log("Setting background color:", value);
+                        linktreeContainer.style.backgroundColor = `#${value}`;
+                        bgSet = true;
+                    }
+                    break;
+                case 'fav':
+                    setDynamicFavicon(`https://${value}`);
+                    break;
+                case 'tb':
+                    linksDiv.innerHTML += `<button class="link" onclick="copyToClipboard('${value}')"><img src="img/tb.png" alt="Thunderbolt Icon"></button>`;
+                break;
+                case 'onion':
+                    linksDiv.innerHTML += `<a class="link" href="http://${value}" target="_blank"><img src="img/onion.png" alt="Onion Icon"></a>`;
+                break;
+                case 'x':
+                    linksDiv.innerHTML += `<a class="link" href="https://x.com/${value}" target="_blank"><img src="img/x.png" alt="X Icon"></a>`;
+                    break;
+                case 'tg':
+                    linksDiv.innerHTML += `<a class="link" href="https://t.me/${value}" target="_blank"><img src="img/tg.png" alt="Telegram Icon"></a>`;
+                    break;
+                case 'wa':
+                    linksDiv.innerHTML += `<a class="link" href="https://wa.me/${value}" target="_blank"><img src="img/wa.png" alt="WhatsApp Icon"></a>`;
+                    break;
+                case 'sn':
+                    linksDiv.innerHTML += `<a class="link" href="https://signal.me/#p/${value}" target="_blank"><img src="img/sn.png" alt="Signal Icon"></a>`;
+                    break;
+                case 'tel':
+                    linksDiv.innerHTML += `<a class="link" href="tel:${formattedValue}" target="_blank"><img src="img/tel.png" alt="Phone Icon"></a>`;
+                    break;
+                case 'mail':
+                    linksDiv.innerHTML += `<a class="link" href="mailto:${value}" target="_blank"><img src="img/mail.png" alt="Mail Icon"></a>`;
+                    break;
+                case 'gh':
+                    linksDiv.innerHTML += `<a class="link" href="https://github.com/${value}" target="_blank"><img src="img/gh.png" alt="GitHub Icon"></a>`;
+                    break;
+                case 'link':
+                    linksDiv.innerHTML += `<a class="link" href="http://${value}" target="_blank"><img src="img/link.png" alt="Link Icon"></a>`;
+                    break;
+                case 'ig':
+                    linksDiv.innerHTML += `<a class="link" href="https://www.instagram.com/${value}/" target="_blank"><img src="img/ig.png" alt="Instagram Icon"></a>`;
+                    break;
+                case 'fb':
+                    linksDiv.innerHTML += `<a class="link" href="https://www.facebook.com/${value}" target="_blank"><img src="img/fb.png" alt="Facebook Icon"></a>`;
+                    break;
+                case 'yt':
+                    linksDiv.innerHTML += `<a class="link" href="https://www.youtube.com/${value}" target="_blank"><img src="img/yt.png" alt="Youtube Icon"></a>`;
+                    break;
+                case 'rumble':
+                    linksDiv.innerHTML += `<a class="link" href="https://rumble.com/${value}" target="_blank"><img src="img/rumble.png" alt="Rumble Icon"></a>`;
+                    break;
+                case 'ens':
+                    linksDiv.innerHTML += `<a class="link" href="http://${value}.limo" intermediate="_blank"><img src="img/ens.png" alt="ENS Icon"></a>`;
+                    break;
+                case 'ipfs':
+                    linksDiv.innerHTML += `<a class="link" href="http://${value}.ipfs.dweb.link" intermediate="_blank"><img src="img/ipfs.png" alt="IPFS Icon"></a>`;
+                    break;
+                case 'nostr':
+                    linksDiv.innerHTML += `<a class="link" href="nostr:${value}" target="_blank"><img src="img/nostr.png" alt="Nostr Icon"></a>`;
+                    break;
+
+                case 'pk':
+                    linksDiv.innerHTML += `<a class="link" href="http://${value}./" target="_blank"><img src="img/pkdns.png" alt="pkdns Icon"></a>`;
+                    break;
+                case 'matrix':
+                    linksDiv.innerHTML += `<a class="link" href="https://matrix.to/#/@${value}:matrix.org" target="_blank"><img src="img/matrix.png" alt="Matrix Icon"></a>`;
+                    break;
+                case 'sx':
+                    linksDiv.innerHTML += `<a class="link" href="https://simplex.chat/contact#/${value.replace(/\s+/g, '')}.onion" target="_blank"><img src="img/simplex.png" alt="SimpleX Icon"></a>`;
+                    break;
+                case 'bsky':
+                    const bskyURL = value.includes('.') ? `https://bsky.app/profile/${value}` : `https://bsky.app/profile/${value}.bsky.social`;
+                    linksDiv.innerHTML += `<a class="link" href="${bskyURL}" target="_blank"><img src="img/bsky.png" alt="Bluesky Icon"></a>`;
+                    break;
+                case 'btc':
+                case 'ln':
+                case 'hns':
+                case 'eth':
+                case 'xmr':
+                case 'zec':
+                case 'bat':
+                case 'aave':
+                case 'ada':
+                case 'algo':
+                case 'apt':
+                case 'atom':
+                case 'avax':
+                case 'bch':
+                case 'bgb':
+                case 'bnb':
+                case 'chainlink':
+                case 'cro':
+                case 'dai':
+                case 'doge':
+                case 'dot':
+                case 'ena':
+                case 'etc':
+                case 'fil':
+                case 'gt':
+                case 'hbar':
+                case 'hype':
+                case 'hype':
+                case 'icp':
+                case 'jup':
+                case 'kas':
+                case 'leo':
+                case 'ltc':
+                case 'mnt':
+                case 'near':
+                case 'okb':
+                case 'om':
+                case 'ondo':
+                case 'op':
+                case 'pepe':
+                case 'pi':
+                case 'pol':
+                case 'render':
+                case 'shib':
+                case 'sol':
+                case 'sui':
+                case 'tao':
+                case 'tia':
+                case 'ton':
+                case 'trx':
+                case 'uni':
+                case 'usdc':
+                case 'usde':
+                case 'usdt':
+                case 'vet':
+                case 'xlm':
+                case 'xrp':
+                    currencies[key] = `<button class="currency-button" onclick="copyToClipboard('${value}')"><img src="img/${key}.png" alt="${key.toUpperCase()} Icon"></button>`;
+                    break;
+                default:
+                    console.warn(`Unhandled record type: ${key}`);
+            }
+        });
+
+        Object.values(currencies).forEach(button => {
+            if (button) {
+                currencyButtonsDiv.innerHTML += button;
+            }
+        });
+    }
+
+    function copyToClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`Copied to clipboard: ${text}`);
+            }).catch(err => {
+                console.error('Clipboard API failed, using fallback: ', err);
+                fallbackCopyToClipboard(text);
+            });
+        } else {
+            fallbackCopyToClipboard(text);
+        }
+    }
+
+    function fallbackCopyToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+            alert(`Copied to clipboard: ${text}`);
+        } catch (err) {
+            console.error('Fallback: Copy failed', err);
+        }
+
+        document.body.removeChild(textArea);
+    }
+
+    function handleSearch() {
+        const domain = domainInput.value.trim();
+        if (domain) {
+            goButton.disabled = true;  
+            domainInput.disabled = true;
+
+            fetchTXTRecords(domain).finally(() => {
+                goButton.disabled = false;
+                domainInput.disabled = false;
+            });
+        } else {
+            alert("Please enter a domain.");
+        }
+    }
+
+    goButton.addEventListener('click', handleSearch);
+    domainInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+            if (!goButton.disabled) {
+                handleSearch();
+            }
+        }
+    });
+
+    goBackButton.addEventListener('click', resetToDefaults);
+
+    // Handle back button on mobile
+    window.onpopstate = function(event) {
+        resetToDefaults();
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TXT Record Prefix Documentation</title>
+    <script src="script.js" defer></script>
+    <link rel="shortcut icon" href="/img/hns.ico" type="image/x-icon">
+    <meta name="description" content="Comprehensive documentation on TXT record prefixes, highlighting the use of Handshake (HNS) TLDs for total ownership and sovereign identity with on-chain, censorship-resistant records.">
+    <meta name="keywords" content="TXT records, Handshake TLDs, sovereignty, identity, censorship-resistant, blockchain, domain names, HNS, decentralized web">
+    <meta name="author" content="Your Name or Organization">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://dprofile.hns.to/prefix.html">
+    
+    <!-- Social Media Meta Tags -->
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="TXT Record Prefix Documentation">
+    <meta property="og:description" content="Learn about the power of on-chain TXT records for Handshake TLDs, enabling total ownership and sovereign identity.">
+    <meta property="og:image" content="https://dprofile.hns.to/img/og-image.png">
+    <meta property="og:url" content="https://dprofile.hns.to/prefix.html">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TXT Record Prefix Documentation">
+    <meta name="twitter:description" content="Discover how on-chain TXT records on Handshake TLDs provide censorship-resistant and sovereign identity.">
+    <meta name="twitter:image" content="https://qll.hns.to/img/twitter-image.png">
+    <meta name="twitter:site" content="@yourtwitterhandle"> -->
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://dprofile.hns.to/img/favicon.png">
+    <link rel="apple-touch-icon" href="https://dprofile.hns.to/img/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+<style>
+/* General Styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 777px;
+    margin: 20px auto;
+    padding: 33px;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007bff;
+    text-align: center;
+}
+
+h2 {
+    font-size: 20px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: #212529;
+}
+
+/* Table Layout */
+.responsive-table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.row:hover {
+    background-color: #e9ecef;
+    border-color: #007bff;
+}
+
+.prefix, .explanation {
+    flex: 1;
+    min-width: 0;
+    padding: 5px;
+}
+
+.button {
+    flex: 0.1;
+    padding: 5px;
+}
+
+.prefix {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    color: #495057;
+    cursor: pointer;
+}
+
+.prefix span {
+    word-break: break-all;
+}
+
+.prefix button {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #212529;
+    transition: color 0.3s ease;
+}
+
+.prefix button:hover {
+    color: #007bff;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+}
+
+.button .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #343a40; /* Darker background color */
+    color: white; /* Change text color to white */
+    border: 1px solid #dee2e6;
+    width: 40px;
+    height: 40px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button .btn:hover {
+    background-color: #495057; /* Darker hover color */
+    color: #ffffff; /* Keep text color white on hover */
+}
+
+.button .btn i, .button .btn img {
+    font-size: 1.2rem;
+    width: 20px;
+    height: 20px;
+    color: white; /* Ensuring icon is white */
+}
+
+.explanation {
+    font-size: 0.9rem;
+    color: #6c757d;
+    line-height: 1.4;
+}
+
+/* Styling for responsive images */
+.responsive-image {
+    width: 100%;
+    height: auto;
+    margin: 10px 0;
+    display: block;
+}
+
+/* Styling for text links */
+a {
+    color: #343a40; /* Same dark color as the button */
+    text-decoration: none;
+    position: relative;
+    display: inline-block; /* Ensure the element is treated as inline-block for the effect */
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; /* Moves the underline further below the text */
+    left: 0;
+    width: 0;
+    height: 2px; /* Height of the underline */
+    border-bottom: 2px dotted transparent; /* Default state: no visible underline */
+    transition: width 0.3s ease; /* Controls the animation duration and timing */
+}
+
+a:hover::after {
+    width: 100%; /* Expands the underline from left to right */
+    border-bottom-color: #343a40; /* Matches the button background color */
+}
+
+/* Mobile Styles */
+@media (max-width: 676px) {
+    .row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .prefix, .button, .explanation {
+        text-align: left;
+    }
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>TXT Record Prefix</h1>
+         <!-- About -->
+	<p>
+	    Onchain records on Handshake (HNS) TLDs represent total ownership and sovereign identity. These records are immutable and censorship-resistant, ensuring that the data you publish cannot be altered or suppressed by any centralized authority. This unique capability empowers individuals and organizations to maintain control over their digital identity and communications, free from external interference or restrictions.
+	</p>
+	<p>
+	    Prefixes are added to TXT records to ensure clients can easily recognize and interpret the data. By standardizing these prefixes, different applications and services can reliably extract the intended information, enabling seamless interoperability and enhancing the utility of your on-chain records.
+	</p>
+	<p>
+    The `.dprofile` experimental client is designed to decipher TXT records and present them in a "dLinks" style. This innovative approach aims to create an intuitive way to visualize and interact with on-chain records, making the data more accessible and user-friendly. For now, on-chain TXT records will work when no NS is set up. When an NS is set up, it will fetch only off-chain TXT records.
+	</p>
+	<!-- Setup -->
+        <h2>Setup</h2>
+        <p>
+        Go to your domain manager on <a href="https://namebase.io" target=_blank">Namebase.io</a>
+        <br><br>
+	    Type: TXT<br>
+	    Name: @<br>
+	    Value/data: link:example.com<br>
+	    TTL: 60 min<br>
+        	<img src="img/namebase.png" alt="Namebase" class="responsive-image">
+        </p>
+        <br><br>
+        <p>
+        <!-- Go to your domain manager on <a href="https://shakestation.io" target=_blank">Shakestation.io</a>
+        <br><br>
+	    Type: TXT<br>
+	    Name: @<br>
+	    Value: link:example.com<br>
+        	<img src="img/shakestation.png" alt="Shakestation" class="responsive-image">-->
+
+        </p>
+        <p>Now visit <a href="http://yourtld.dprofile.hns.to">http://yourtld.dprofile.hns.to</a></p>
+        <!-- Info Section -->
+        <h1>List of Prefixes</h1>
+        <h2>Info</h2>
+        <div class="responsive-table">
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('pfp:example.com/img.png')">
+                    <span>pfp:example.com/img.png</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('pfp:example.com/img.png')">📋</button>
+                </div>
+                <div class="button">
+
+                </div>
+                <div class="explanation">Display the profile picture.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('mail:example@example.com')">
+                    <span>mail:example@example.com</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('mail:example@example.com')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="mailto:example@example.com" target="_blank"><i class="fa fa-envelope"></i></a>
+                </div>
+                <div class="explanation">Opens the default email client to send an email.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('link:example.com')">
+                    <span>link:example.com</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('link:example.com')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://example.com" target="_blank"><i class="fa fa-link"></i></a>
+                </div>
+                <div class="explanation">Redirects to a specific webpage.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('link:example.onion')">
+                    <span>onion:example</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('onion:example')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" onclick="copyToClipboard('example')"><img src="img/onion.png" alt="Onion"></a>
+                </div>
+                <div class="explanation">Copies a specific Onion page.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('pkdns:pkarrkey')">
+                    <span>pk:pkarrkey</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('pk:pkarrkey')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="http://pkarrkey./" target="_blank"><img src="img/pkdns.png" alt="pkdns"></a>
+                </div>
+                <div class="explanation">Redirects to a specific pkdns page.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('gh:username')">
+                    <span>gh:username</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('gh:username')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://github.com/username" target="_blank"><img src="img/gh.png" alt="GitHub"></a>
+                </div>
+                <div class="explanation">Links to a GitHub profile or repository.</div>
+            </div>
+        </div>
+
+        <!-- Social Section -->
+        <h2>Social</h2>
+        <div class="responsive-table">
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('x:username')">
+                    <span>x:username</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('x:username')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://x.com/username" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+                <div class="explanation">Links to a profile on X (formerly Twitter).</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('nostr:npub123')">
+                    <span>nostr:npub123</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('nostr:npub123')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" onclick="copyToClipboard('npub123')"><img src="img/nostr.png" alt="Nostr"></a>
+                </div>
+                <div class="explanation">Copies a Nostr public key to the clipboard.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('bsky:username')">
+                    <span>bsky:username</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('bsky:username')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://bsky.app/profile/username.bsky.social" target="_blank"><img src="img/bsky.png" alt="Bsky"></a>
+                </div>
+                <div class="explanation">Links to a Bluesky profile.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('ig:username')">
+                    <span>ig:username</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('ig:username')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://www.instagram.com/username/" target="_blank"><img src="img/ig.png" alt="Instagram"></a>
+                </div>
+                <div class="explanation">Links to an Instagram profile.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('fb:username')">
+                    <span>fb:username</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('fb:username')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://www.facebook.com/username" target="_blank"><img src="img/fb.png" alt="Facebook"></a>
+                </div>
+                <div class="explanation">Links to a Facebook profile.</div>
+            </div>
+        </div>
+
+        <!-- Communication Section -->
+        <h2>Communication</h2>
+        <div class="responsive-table">
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('tb:username')">
+                    <span>tb:username</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('tb:username')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" onclick="copyToClipboard('username')"><img src="img/tb.png" alt="TB"></a>
+                </div>
+                <div class="explanation">Copies the Thunderbolt identifier to the clipboard.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('sn:+1234567890')">
+                    <span>sn:+1234567890</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('sn:+1234567890')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://signal.me/#p/+1234567890" target="_blank"><img src="img/signal.png" alt="Signal"></a>
+                </div>
+                <div class="explanation">Opens a Signal messaging profile or chat.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('wa:+1234567890')">
+                    <span>wa:+1234567890</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('wa:+1234567890')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://wa.me/+1234567890" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+                <div class="explanation">Starts a WhatsApp chat with the specified number.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('tg:username')">
+                    <span>tg:username</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('tg:username')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="https://t.me/username" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                </div>
+                <div class="explanation">Opens a Telegram chat with the specified username.</div>
+            </div>
+            <div class="row">
+                <div class="prefix" onclick="copyToClipboard('tel:+1234567890')">
+                    <span>tel:+1234567890</span>
+                    <button class="btn" onclick="event.stopPropagation(); copyToClipboard('tel:+1234567890')">📋</button>
+                </div>
+                <div class="button">
+                    <a class="btn" href="tel:+1234567890"><i class="fa fa-phone"></i></a>
+                </div>
+                <div class="explanation">Opens the phone dialer with the specified number.</div>
+            </div>
+        </div>
+        <!-- Layout Section -->
+<h2>Layout</h2>
+<div class="responsive-table">
+    <div class="row">
+        <div class="prefix" onclick="copyToClipboard('bgcolor:ffffff')">
+            <span>bgcolor:ffffff</span>
+
+        </div>
+        <div class="button">
+
+        </div>
+        <div class="explanation">Turns the background color white (#ffffff).</div>
+    </div>
+    <div class="row">
+        <div class="prefix" onclick="copyToClipboard('bg:example.com/bg_img.png')">
+            <span>bg:example.com/bg_img.png</span>
+        </div>
+        <div class="button">
+
+        </div>
+        <div class="explanation">Displays https://example.com/bg_img.png as background image</div>
+    </div>
+</div>
+        <!-- Wallet Section -->
+<h2>Wallet</h2>
+<div class="responsive-table">
+    <div class="row">
+        <div class="prefix" onclick="copyToClipboard('btc:btc_address')">
+            <span>btc:btc_address</span>
+            <button class="btn" onclick="event.stopPropagation(); copyToClipboard('btc:btc_address')">📋</button>
+        </div>
+        <div class="button">
+            <a class="btn" onclick="copyToClipboard('btc_address')"><img src="img/btc.png" alt="BTC"></a>
+        </div>
+        <div class="explanation">Copies the Bitcoin wallet address to the clipboard.</div>
+    </div>
+    <div class="row">
+        <div class="prefix" onclick="copyToClipboard('hns:hns_address')">
+            <span>hns:hns_address</span>
+            <button class="btn" onclick="event.stopPropagation(); copyToClipboard('hns:hns_address')">📋</button>
+        </div>
+        <div class="button">
+            <a class="btn" onclick="copyToClipboard('hns_address')"><img src="img/hns.png" alt="HNS"></a>
+        </div>
+        <div class="explanation">Copies the Handshake wallet address to the clipboard.</div>
+    </div>
+    <div class="row">
+        <div class="prefix" onclick="copyToClipboard('eth:eth_address')">
+            <span>eth:eth_address</span>
+            <button class="btn" onclick="event.stopPropagation(); copyToClipboard('eth:eth_address')">📋</button>
+        </div>
+        <div class="button">
+            <a class="btn" onclick="copyToClipboard('eth_address')"><img src="img/eth.png" alt="ETH"></a>
+        </div>
+        <div class="explanation">Copies the Ethereum wallet address to the clipboard.</div>
+    </div>
+    <div class="row">
+        <div class="prefix" onclick="copyToClipboard('xmr:xmr_address')">
+            <span>xmr:xmr_address</span>
+            <button class="btn" onclick="event.stopPropagation(); copyToClipboard('xmr:xmr_address')">📋</button>
+        </div>
+        <div class="button">
+            <a class="btn" onclick="copyToClipboard('xmr_address')"><img src="img/xmr.png" alt="XMR"></a>
+        </div>
+        <div class="explanation">Copies the Monero wallet address to the clipboard.</div>
+    </div>
+</div>
+        <!-- Extra -->
+<h2>External</h2>
+<div class="responsive-table">
+    <div class="row">
+        <div class="prefix" onclick="copyToClipboard('ext:domain.com')">
+            <span>ext:domain.com</span>
+            <button class="btn" onclick="event.stopPropagation(); copyToClipboard('ext:domain.com')">📋</button>
+        </div>
+        <div class="button">
+
+        </div>
+        <div class="explanation">Fetch TXT records from an external TLD or SLD.</div>
+    </div>
+</div>
+    </div>
+    <script>
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert(`Copied to clipboard: ${text}`);
+                }).catch(err => {
+                    console.error('Failed to copy to clipboard: ', err);
+                    fallbackCopyToClipboard(text);
+                });
+            } else {
+                fallbackCopyToClipboard(text);
+            }
+        }
+
+        function fallbackCopyToClipboard(text) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            tempInput.style.position = 'fixed';
+            tempInput.style.opacity = 0;
+            document.body.appendChild(tempInput);
+            tempInput.focus();
+            tempInput.select();
+
+            try {
+                document.execCommand('copy');
+                alert(`Copied to clipboard: ${text}`);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy. Please try again manually.');
+            }
+
+            document.body.removeChild(tempInput);
+        }
+    </script>
+</body>
+</html>
