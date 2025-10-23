@@ -47,8 +47,6 @@ TXT record prefixes standardize how information is structured and interpreted, m
 | `sn:<number>`                | Signal profile                   | `sn:+1234567890`           |
 | `wa:<number>`                | WhatsApp                         | `wa:+1234567890`           |
 | `tg:<username>`              | Telegram                         | `tg:username`              |
-| `tel:<number>`               | Phone number                     | `tel:+1234567890`          |
-
 
 ### Web
 | **Prefix**                   | **Purpose**                      | **Example**                |
