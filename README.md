@@ -91,7 +91,7 @@ btc, ln, hns, eth, xmr, zec, bat, aave, ada, algo, apt, atom, avax, bch, bgb, bn
 ---
 
 # Note:
-This is an experimental demo. It uses an HNS node (by [Eskimo](https://github.com/eskimo)) to fetch the TXT records. When an NS is set up, it will fetch only off-chain TXT records.. It works with Handshake HNS TLDs, HNS SLDs, HNS dSLDs, and ICANN SLDs.
+This is an experimental demo. It uses HNS nodes (by [Eskimo](https://github.com/eskimo) and [James]([https://github.com/eskimo](https://github.com/james-stevens))) to fetch the TXT records. When an NS is set up, it will fetch only off-chain TXT records.. It works with Handshake HNS TLDs, HNS SLDs, HNS dSLDs, and ICANN SLDs.
 
 The primary goal of this demo is to establish a universal standard for TXT records and pave the way for APIs supporting wallets, socials, logins,...
 
