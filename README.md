@@ -70,7 +70,7 @@ TXT record prefixes standardize how information is structured and interpreted, m
 ### Media
 | **Prefix**                   | **Purpose**                      | **Example**                |
 |------------------------------|----------------------------------|----------------------------|
-| `yt:<username>`              | YouTube channel/URL              | `yt:username`              |
+| `yt:<username>`              | YouTube channel/URL              | `yt:@username`             |
 | `rumble:<channelname>`       | Rumble channel/URL	            | `rumble:channelname`       |
 
 ### Wallet
