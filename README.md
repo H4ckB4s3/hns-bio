@@ -20,7 +20,6 @@ TXT record prefixes standardize how information is structured and interpreted, m
    - **Type**: TXT  
    - **Name**: `@`  
    - **Value/Data**: `<prefix>:<value>` (e.g., `link:example.com`)  
-   - **TTL**: 60 minutes  
 
 3. After configuration, visit:  https://hackbase.hns.bio (Replace "hackbase" with your actual TLD or desired domain name.) or search for SLD's (ICANN/HNS) on the index page: https://hns.bio
 
