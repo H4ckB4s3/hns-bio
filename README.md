@@ -21,7 +21,7 @@ TXT record prefixes standardize how information is structured and interpreted, m
    - **Name**: `@`  
    - **Value/Data**: `<prefix>:<value>` (e.g., `link:example.com`)  
 
-3. After configuration, visit:  https://hackbase.hns.bio (Replace "hackbase" with your actual TLD or desired domain name.) or search for SLD's (ICANN/HNS) on the index page: https://hns.bio, you can share SLD's (ICANN/HNS) in this format https://hns.bio/sld.tld
+3. After configuration, visit:  https://hackbase.hns.bio (Replace "hackbase" with your actual TLD or desired domain name) or search for SLD's (ICANN/HNS) on the index page: https://hns.bio, you can share SLD's (ICANN/HNS) in this format https://hns.bio/sld.tld.
 
 
 ---
