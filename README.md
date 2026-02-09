@@ -83,7 +83,7 @@ TXT record prefixes standardize how information is structured and interpreted, m
 #### Compatible wallet addresses:
 btc, ln, hns, eth, xmr, zec, bat, aave, ada, algo, apt, atom, avax, bch, bgb, bnb, chainlink, cro, dai, doge, dot, ena, etc, fil, gt, hbar, hype, icp, jup, kas, leo, ltc, mnt, near, okb, om, ondo, op, pepe, pi, pol, render, shib, sol, sui, tao, tia, ton, trx, uni, usdc, usde, usdt, vet, xlm, xrp
 
-### External Records
+### TXT Chaining: Add External Records
 | **Prefix**                   | **Purpose**                      | **Example**                |
 |------------------------------|----------------------------------|----------------------------|
 | `ext:<url>`              | Fetch TXT records from an external TLD or SLD (HNS/ICANN)           | `ext:example.com`          |
