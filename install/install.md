@@ -44,6 +44,10 @@ sudo certbot certonly --manual --preferred-challenges dns \
 
 Follow the prompts to add a TXT records to your DNS when requested.
 
+This will help if there is an error:
+```bash
+sudo systemctl reload nginx
+```
 ## 5. Create Nginx Configuration
 
 Create a new Nginx configuration file.
