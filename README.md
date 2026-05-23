@@ -3,7 +3,7 @@ Fetches TXT records and displays them in a Linktree-style interface.
 
 # TXT Record Prefix Documentation
 
-This repository provides comprehensive documentation for TXT record prefixes used with Handshake (HNS) TLDs. These prefixes facilitate standardized data interpretation, enabling clients to easily recognize and interact with on-chain and off-chain records.
+This repository provides comprehensive documentation for TXT record prefixes used with HNS/DNS/ENS domains. These prefixes facilitate standardized data interpretation, enabling clients to easily recognize and interact with on-chain and off-chain records.
 
 ## Introduction
 
