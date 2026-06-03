@@ -42,16 +42,16 @@ TXT record prefixes standardize how information is structured and interpreted, m
 ### AI Agents
 | **Prefix**                   | **Purpose**                      | **Example**                |
 |------------------------------|----------------------------------|----------------------------|
-| `agent-manifest:<url>`       | Agent manifest JSON              | `agent-manifest:example.com/agent.json` |
-| `skill-md:<url>`             | Agent SKILL.md documentation     | `skill-md:example.com/SKILL.md` |
-| `agent-capabilities:<list>`  | Comma-separated capabilities     | `agent-capabilities:research,web-browsing,data-entry` |
+| `manifest:<url>`             | Agent manifest JSON              | `manifest:example.com/agent.json` |
+| `skill:<url>`                | Agent SKILL.md documentation     | `skill:example.com/SKILL.md` |
 
-### Agentic Commerce / BMOS
+### Agentic Commerce
 | **Prefix**                   | **Purpose**                      | **Example**                |
 |------------------------------|----------------------------------|----------------------------|
-| `bmos-feed:<url>`            | BMOS Agentic Commerce feed       | `bmos-feed:store.example/agentic-commerce/feeds/demo` |
-| `bmos-storefront:<url>`      | BMOS storefront or product surface | `bmos-storefront:store.example` |
-| `mpp:<url>`                  | Machine Payments Protocol endpoint | `mpp:pay.example/.well-known/mpp` |
+| `bmos:<url>`                 | BMOS Agentic Commerce feed       | `bmos:store.example/agentic-commerce/feeds/demo` |
+| `tempo:<url>`                | Tempo payment endpoint           | `tempo:pay.example/.well-known/mpp` |
+
+For compatibility, the renderer also accepts existing longer records for these fields.
 
 ### Communication
 | **Prefix**                   | **Purpose**                      | **Example**                |
@@ -115,4 +115,3 @@ The primary goal of this demo is to establish a universal standard for TXT recor
 ## License
 
 No license, no limits. Free to use, abuse and improve this code however you see fit.
-

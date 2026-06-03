@@ -173,7 +173,6 @@ function processTXTRecords(txtRecords) {
         name: null,
         category: null,
         bio: null,
-        capabilities: [],
         links: []
     };
     const currencies = { 
@@ -218,12 +217,7 @@ function processTXTRecords(txtRecords) {
             case 'custom':
                 agentMetadata.bio = value;
                 break;
-            case 'agent-capabilities':
-                agentMetadata.capabilities = value
-                    .split(',')
-                    .map(capability => capability.trim())
-                    .filter(Boolean);
-                break;
+            case 'manifest':
             case 'agent-manifest':
                 agentMetadata.links.push({
                     className: 'agent-link agent-link-manifest',
@@ -231,6 +225,7 @@ function processTXTRecords(txtRecords) {
                     href: normalizeHTTPURL(value)
                 });
                 break;
+            case 'skill':
             case 'skill-md':
                 agentMetadata.links.push({
                     className: 'agent-link agent-link-skill',
@@ -238,6 +233,7 @@ function processTXTRecords(txtRecords) {
                     href: normalizeHTTPURL(value)
                 });
                 break;
+            case 'bmos':
             case 'bmos-feed':
                 agentMetadata.links.push({
                     className: 'agent-link agent-link-commerce',
@@ -245,17 +241,11 @@ function processTXTRecords(txtRecords) {
                     href: normalizeHTTPURL(value)
                 });
                 break;
-            case 'bmos-storefront':
-                agentMetadata.links.push({
-                    className: 'agent-link agent-link-commerce',
-                    label: 'BMOS Storefront',
-                    href: normalizeHTTPURL(value)
-                });
-                break;
+            case 'tempo':
             case 'mpp':
                 agentMetadata.links.push({
                     className: 'agent-link agent-link-commerce',
-                    label: 'MPP Payment',
+                    label: 'Tempo Payment',
                     href: normalizeHTTPURL(value)
                 });
                 break;
@@ -413,7 +403,6 @@ function renderAgentMetadata(container, metadata) {
     const hasMetadata = metadata.name
         || metadata.category
         || metadata.bio
-        || metadata.capabilities.length
         || metadata.links.length;
 
     if (!hasMetadata) {
@@ -430,14 +419,11 @@ function renderAgentMetadata(container, metadata) {
     const bioHTML = metadata.bio
         ? `<p class="agent-bio">${escapeHTML(metadata.bio)}</p>`
         : '';
-    const capabilitiesHTML = metadata.capabilities.length
-        ? `<div class="agent-capabilities">${metadata.capabilities.map(capability => `<span>${escapeHTML(capability)}</span>`).join('')}</div>`
-        : '';
     const linksHTML = metadata.links.length
         ? `<div class="agent-links">${metadata.links.map(link => `<a class="${link.className}" href="${escapeHTML(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHTML(link.label)}</a>`).join('')}</div>`
         : '';
 
-    container.innerHTML = `${nameHTML}${categoryHTML}${bioHTML}${capabilitiesHTML}${linksHTML}`;
+    container.innerHTML = `${nameHTML}${categoryHTML}${bioHTML}${linksHTML}`;
 }
 
 

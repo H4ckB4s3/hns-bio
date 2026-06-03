@@ -64,21 +64,12 @@ body {
     line-height: 1.5;
 }
 
-.agent-capabilities,
 .agent-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
     margin-top: 12px;
-}
-
-.agent-capabilities span {
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-    font-size: 0.85rem;
 }
 
 .agent-link {
