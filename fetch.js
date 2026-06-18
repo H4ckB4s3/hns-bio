@@ -23,8 +23,9 @@ async function fetchTXTRecords() {
 
         // Process any external records asynchronously
         txtRecords.forEach(record => {
-            if (record.startsWith("ext:")) {
-                const externalDomain = record.split("ext:")[1];
+            const parsedRecord = parseTXTRecord(record);
+            if (parsedRecord && parsedRecord.key === "ext") {
+                const externalDomain = parsedRecord.value;
                 fetchAndProcessTXTRecords(externalDomain).then(processTXTRecords);
             }
         });
@@ -125,11 +126,55 @@ function formatPhoneNumber(phone) {
     return phone; // Return unchanged if none of the conditions apply
 }
 
+function parseTXTRecord(record) {
+    const colonIndex = record.indexOf(':');
+    const equalsIndex = record.indexOf('=');
+    const indexes = [colonIndex, equalsIndex].filter(index => index >= 0);
+
+    if (indexes.length === 0) {
+        return null;
+    }
+
+    const separatorIndex = Math.min(...indexes);
+    const key = record.slice(0, separatorIndex).trim().toLowerCase();
+    const value = record.slice(separatorIndex + 1).trim();
+
+    if (!key || !value) {
+        return null;
+    }
+
+    return { key, value };
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char]));
+}
+
+function normalizeHTTPURL(value) {
+    if (/^https?:\/\//i.test(value)) {
+        return value;
+    }
+    return `https://${value}`;
+}
+
 function processTXTRecords(txtRecords) {
     const profileDiv = document.getElementById('profile');
+    const agentProfileDiv = document.getElementById('agent-profile');
     const linksDiv = document.getElementById('links');
     const currencyButtonsDiv = document.getElementById('currency-buttons');
     let bgSet = false;
+    const agentMetadata = {
+        name: null,
+        category: null,
+        bio: null,
+        links: []
+    };
     const currencies = { 
         btc: null, ln: null, hns: null, eth: null, xmr: null, zec: null, bat: null,
         aave: null, ada: null, algo: null, apt: null, atom: null, avax: null, 
@@ -143,7 +188,14 @@ function processTXTRecords(txtRecords) {
     };
 
     txtRecords.forEach(record => {
-        const [key, value] = record.split(':');
+        const parsedRecord = parseTXTRecord(record);
+
+        if (!parsedRecord) {
+            console.warn(`Unhandled TXT record format: ${record}`);
+            return;
+        }
+
+        const { key, value } = parsedRecord;
         let formattedValue = value;
 
         // Format phone number for 'tel' key
@@ -154,6 +206,48 @@ function processTXTRecords(txtRecords) {
         switch (key) {
             case 'pfp':
                 profileDiv.innerHTML = `<img src="https://${value}" alt="Profile Picture">`;
+                break;
+            case 'name':
+                agentMetadata.name = value;
+                break;
+            case 'category':
+                agentMetadata.category = value;
+                break;
+            case 'bio':
+            case 'custom':
+                agentMetadata.bio = value;
+                break;
+            case 'manifest':
+            case 'agent-manifest':
+                agentMetadata.links.push({
+                    className: 'agent-link agent-link-manifest',
+                    label: 'Agent Manifest',
+                    href: normalizeHTTPURL(value)
+                });
+                break;
+            case 'skill':
+            case 'skill-md':
+                agentMetadata.links.push({
+                    className: 'agent-link agent-link-skill',
+                    label: 'SKILL.md',
+                    href: normalizeHTTPURL(value)
+                });
+                break;
+            case 'bmos':
+            case 'bmos-feed':
+                agentMetadata.links.push({
+                    className: 'agent-link agent-link-commerce',
+                    label: 'BMOS Feed',
+                    href: normalizeHTTPURL(value)
+                });
+                break;
+            case 'tempo':
+            case 'mpp':
+                agentMetadata.links.push({
+                    className: 'agent-link agent-link-commerce',
+                    label: 'Tempo Payment',
+                    href: normalizeHTTPURL(value)
+                });
                 break;
             case 'bg':
                 if (!bgSet) {
@@ -294,11 +388,42 @@ function processTXTRecords(txtRecords) {
         }
     });
 
+    renderAgentMetadata(agentProfileDiv, agentMetadata);
+
     Object.values(currencies).forEach(button => {
         if (button) {
             currencyButtonsDiv.innerHTML += button;
         }
     });
+}
+
+function renderAgentMetadata(container, metadata) {
+    if (!container) return;
+
+    const hasMetadata = metadata.name
+        || metadata.category
+        || metadata.bio
+        || metadata.links.length;
+
+    if (!hasMetadata) {
+        container.innerHTML = '';
+        return;
+    }
+
+    const nameHTML = metadata.name
+        ? `<h2>${escapeHTML(metadata.name)}</h2>`
+        : '';
+    const categoryHTML = metadata.category
+        ? `<div class="agent-category">${escapeHTML(metadata.category)}</div>`
+        : '';
+    const bioHTML = metadata.bio
+        ? `<p class="agent-bio">${escapeHTML(metadata.bio)}</p>`
+        : '';
+    const linksHTML = metadata.links.length
+        ? `<div class="agent-links">${metadata.links.map(link => `<a class="${link.className}" href="${escapeHTML(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHTML(link.label)}</a>`).join('')}</div>`
+        : '';
+
+    container.innerHTML = `${nameHTML}${categoryHTML}${bioHTML}${linksHTML}`;
 }
 
 

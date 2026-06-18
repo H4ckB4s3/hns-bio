@@ -19,7 +19,7 @@ TXT record prefixes standardize how information is structured and interpreted, m
 2. Add a new TXT record with the following configuration:
    - **Type**: TXT  
    - **Name**: `@`  
-   - **Value/Data**: `<prefix>:<value>` (e.g., `link:example.com`)  
+   - **Value/Data**: `<prefix>:<value>` (e.g., `link:example.com`) or `<prefix>=<value>`
 
 3. After configuration, visit:  https://hackbase.hns.bio (Replace "hackbase" with your actual TLD or desired domain name) or search for SLD's (ICANN/HNS) on the index page: https://hns.bio, you can share SLD's (ICANN/HNS) in this format https://hns.bio/sld.tld.
 
@@ -32,8 +32,26 @@ TXT record prefixes standardize how information is structured and interpreted, m
 | **Prefix**                   | **Purpose**                      | **Example**                |
 |------------------------------|----------------------------------|----------------------------|
 | `pfp:<url>`                  | Profile picture URL              | `pfp:example.com/img.png`  |
+| `name:<text>`                | Display name                     | `name:Janice The Agent`    |
+| `category:<text>`            | Profile category                 | `category:Research Agent`  |
+| `bio:<text>`                 | Short profile biography          | `bio:Decentralized AI agent for HNS research` |
+| `custom:<text>`              | Alias for profile biography      | `custom:Builder and researcher` |
 | `bgcolor:<hex>`              | Background color in HEX format   | `bgcolor:ffffff`           |
 | `bg:<url>`                   | Background image URL             | `bg:example.com/bg_img.png`|
+
+### AI Agents
+| **Prefix**                   | **Purpose**                      | **Example**                |
+|------------------------------|----------------------------------|----------------------------|
+| `manifest:<url>`             | Agent manifest JSON              | `manifest:example.com/agent.json` |
+| `skill:<url>`                | Agent SKILL.md documentation     | `skill:example.com/SKILL.md` |
+
+### Agentic Commerce
+| **Prefix**                   | **Purpose**                      | **Example**                |
+|------------------------------|----------------------------------|----------------------------|
+| `bmos:<url>`                 | BMOS Agentic Commerce feed       | `bmos:store.example/agentic-commerce/feeds/demo` |
+| `tempo:<url>`                | Tempo payment endpoint           | `tempo:pay.example/.well-known/mpp` |
+
+For compatibility, the renderer also accepts existing longer records for these fields.
 
 ### Communication
 | **Prefix**                   | **Purpose**                      | **Example**                |
@@ -97,6 +115,3 @@ The primary goal of this demo is to establish a universal standard for TXT recor
 ## License
 
 No license, no limits. Free to use, abuse and improve this code however you see fit.
-
-
-
