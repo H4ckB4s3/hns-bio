@@ -1,85 +1,134 @@
-async function fetchTXTRecords() {
-    const fullHostname = window.location.hostname;
-    let rootDomain = "";
+document.getElementById('hns-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let query = document.getElementById('hns-input').value.trim();
 
-    if (fullHostname.includes('.hns.bio')) {
-        rootDomain = fullHostname.split('.hns.bio')[0];
-    } else {
-        rootDomain = fullHostname;
+    // Remove http://, https://, or leading dots from the input
+    query = query.replace(/^https?:\/\//, '').replace(/^\./, '');
+
+    // Replace spaces with dots
+    query = query.replace(/\s+/g, '.');
+
+    if (query) {
+        const parts = query.split('/');
+        let domain = parts.shift();
+        const path = parts.join('/');
+
+        // Check if it's an .eth domain
+        const ethPattern = /\.eth$/;
+        if (ethPattern.test(domain)) {
+            domain += '.limo';
+            const url = path ? `http://${domain}/${path}` : `http://${domain}`;
+            window.open(url, '_blank');
+            return;
+        }
+
+        // For Handshake domains, fetch TXT records and process them
+        handleHandshakeDomain(domain, path);
     }
+});
 
-    document.title = rootDomain;
+// Settings menu toggle
+const settingsButton = document.querySelector('.settings-button');
+const settingsMenu = document.querySelector('.settings-menu');
 
-    // Fetch and process the root domain's records
-    const txtRecords = await fetchAndProcessTXTRecords(rootDomain);
+settingsButton.addEventListener('click', () => {
+    settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+});
 
-    if (txtRecords) {
-        // Apply dynamic favicon and CSS
-        await setDynamicFavicon(txtRecords);
-        await setDynamicCSS(txtRecords);
+document.addEventListener('click', (event) => {
+    if (!settingsButton.contains(event.target) && !settingsMenu.contains(event.target)) {
+        settingsMenu.style.display = 'none';
+    }
+});
 
-        // Process and display the fetched records
-        processTXTRecords(txtRecords);
+document.getElementById('hns-input').focus();
 
-        // Process any external records asynchronously
-        txtRecords.forEach(record => {
-            if (record.startsWith("ext:")) {
-                const externalDomain = record.split("ext:")[1];
-                fetchAndProcessTXTRecords(externalDomain).then(processTXTRecords);
+// Function to handle Handshake domain TXT record lookup and redirection
+async function handleHandshakeDomain(domain, path) {
+    try {
+        const txtRecords = await fetchTXTRecords(domain);
+        
+        if (!txtRecords || txtRecords.length === 0) {
+            // Fallback to standard HNS resolution if no TXT records found
+            const url = path ? `http://${domain}.hns.to/${path}` : `http://${domain}.hns.to`;
+            window.open(url, '_blank');
+            return;
+        }
+
+        // Process TXT records in order of priority
+        let redirectPerformed = false;
+        
+        for (const record of txtRecords) {
+            const [prefix, ...dataParts] = record.split(':');
+            const data = dataParts.join(':');
+            
+            if (!prefix || !data) continue;
+            
+            switch (prefix.toLowerCase()) {
+                case 'link':
+                    // Redirect to https://<data>
+                    const linkUrl = `https://${data}`;
+                    window.open(linkUrl, '_blank');
+                    redirectPerformed = true;
+                    break;
+                    
+                case 'url':
+                    // Redirect to https://<data>
+                    const url = `https://${data}`;
+                    window.open(url, '_blank');
+                    redirectPerformed = true;
+                    break;
+                    
+                case 'ipfs':
+                    // Redirect to https://<data>ipfs.inbrowser.link
+                    const ipfsUrl = `https://${data}ipfs.inbrowser.link`;
+                    window.open(ipfsUrl, '_blank');
+                    redirectPerformed = true;
+                    break;
+                    
+                case 'onion':
+                    // Redirect to http://<data>
+                    const onionUrl = `http://${data}`;
+                    window.open(onionUrl, '_blank');
+                    redirectPerformed = true;
+                    break;
+                    
+                case 'nostr':
+                    // Redirect to nostr:<data>
+                    window.open(`nostr:${data}`, '_blank');
+                    redirectPerformed = true;
+                    break;
+                    
+                case 'ens':
+                    // Redirect to https://<data>.limo
+                    const ensUrl = `https://${data}.limo`;
+                    window.open(ensUrl, '_blank');
+                    redirectPerformed = true;
+                    break;
             }
-        });
-    }
-}
-
-// Function to set dynamic favicon based on TXT record with "fav:" prefix
-async function setDynamicFavicon(txtRecords) {
-    if (!txtRecords) return;
-
-    const faviconRecord = txtRecords.find(record => record.startsWith("fav:"));
-    if (faviconRecord) {
-        const faviconValue = faviconRecord.split("fav:")[1];
-        const faviconUrl = `https://${faviconValue}`;
-        
-        // Update existing favicon link or create new one
-        let faviconLink = document.querySelector('link[rel="shortcut icon"]');
-        if (!faviconLink) {
-            faviconLink = document.createElement('link');
-            faviconLink.rel = 'shortcut icon';
-            faviconLink.type = 'image/x-icon';
-            document.head.appendChild(faviconLink);
+            
+            // Stop after first matching redirect
+            if (redirectPerformed) break;
         }
-        faviconLink.href = faviconUrl;
-    }
-    // If no "fav:" record exists, default favicon "/img/hns.ico" remains
-}
-
-// Function to set dynamic CSS based on TXT record with "css:" prefix
-async function setDynamicCSS(txtRecords) {
-    if (!txtRecords) return;
-
-    const cssRecord = txtRecords.find(record => record.startsWith("css:"));
-    if (cssRecord) {
-        const cssValue = cssRecord.split("css:")[1];
-        const cssUrl = `/css/${cssValue}.css`; // Self-hosted CSS file path
         
-        // Update existing stylesheet link or create new one
-        let cssLink = document.querySelector('link[rel="stylesheet"]');
-        if (!cssLink) {
-            cssLink = document.createElement('link');
-            cssLink.rel = 'stylesheet';
-            document.head.appendChild(cssLink);
+        // If no redirect was performed, fallback to standard HNS resolution
+        if (!redirectPerformed) {
+            const url = path ? `http://${domain}.hns.to/${path}` : `http://${domain}.hns.to`;
+            window.open(url, '_blank');
         }
-        cssLink.href = cssUrl;
+        
+    } catch (error) {
+        console.error('Error fetching TXT records:', error);
+        // Fallback to standard HNS resolution on error
+        const url = path ? `http://${domain}.hns.to/${path}` : `http://${domain}.hns.to`;
+        window.open(url, '_blank');
     }
-    // If no "css:" record exists, default "style.css?version=1" remains
 }
 
-async function fetchAndProcessTXTRecords(domain) {
+// Function to fetch TXT records for a domain
+async function fetchTXTRecords(domain) {
     const url = `https://resolve.shakestation.io/dns-query?name=${domain}&type=TXT`;
-        // alternative node: const url = `https://api.web3dns.net/?name=${domain}&type=TXT`;
-        
-    console.log("Fetch URL:", url);
-
+    
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -91,247 +140,18 @@ async function fetchAndProcessTXTRecords(domain) {
         }
 
         const data = await response.json();
-        console.log("DNS Response:", data);
+        console.log("DNS Response for", domain, ":", data);
 
         if (data.Answer && data.Answer.length > 0) {
             return data.Answer
                 .filter(record => record.type === 16)
                 .map(record => record.data.replace(/"/g, ''));
         } else {
-            console.error("No TXT records found in DNS response.");
-            document.body.innerHTML = `<p>No TXT records found for this domain.</p><br><a style="color: #fff; text-decoration: none;" href="https://github.com/H4ckB4s3/hns-bio">Do you need help seting up your DID? Check the full documentation</a>`;
-            return null;
+            console.log("No TXT records found for domain:", domain);
+            return [];
         }
     } catch (error) {
         console.error("Fetch Error:", error);
-        document.body.innerHTML = `<p>An error occurred while fetching TXT records: ${error.message}</p><br><a style="color: #fff; text-decoration: none;" href="https://github.com/H4ckB4s3/hns-bio">Do you need help seting up your DID? Check the full documentation</a>`;
-        return null;
+        throw error;
     }
 }
-
-
-// Helper function to format phone numbers
-function formatPhoneNumber(phone) {
-    if (phone.startsWith('+')) {
-        // Keep the + if it already exists
-        return phone;
-    } else if (phone.startsWith('00')) {
-        // Replace 00 with +
-        return '+' + phone.slice(2);
-    } else if (/^\d/.test(phone)) {
-        // Prepend + if it starts with a digit
-        return '+' + phone;
-    }
-    return phone; // Return unchanged if none of the conditions apply
-}
-
-function processTXTRecords(txtRecords) {
-    const profileDiv = document.getElementById('profile');
-    const linksDiv = document.getElementById('links');
-    const currencyButtonsDiv = document.getElementById('currency-buttons');
-    let bgSet = false;
-    const currencies = { 
-        btc: null, ln: null, hns: null, eth: null, xmr: null, zec: null, bat: null,
-        aave: null, ada: null, algo: null, apt: null, atom: null, avax: null, 
-        bch: null, bgb: null, bnb: null, chainlink: null, cro: null, dai: null, 
-        doge: null, dot: null, ena: null, etc: null, fil: null, gt: null, 
-        hbar: null, hype: null, icp: null, jup: null, kas: null, leo: null, 
-        ltc: null, mnt: null, near: null, okb: null, om: null, ondo: null, 
-        op: null, pepe: null, pi: null, pol: null, render: null, shib: null, 
-        sol: null, sui: null, tao: null, tia: null, ton: null, trx: null, 
-        uni: null, usdc: null, usde: null, usdt: null, vet: null, xlm: null, xrp: null 
-    };
-
-    txtRecords.forEach(record => {
-        const [key, value] = record.split(':');
-        let formattedValue = value;
-
-        // Format phone number for 'tel' key
-        if (key === 'tel') {
-            formattedValue = formatPhoneNumber(value);
-        }
-
-        switch (key) {
-            case 'pfp':
-                profileDiv.innerHTML = `<img src="https://${value}" alt="Profile Picture">`;
-                break;
-            case 'bg':
-                if (!bgSet) {
-                    document.body.style.backgroundImage = `url(https://${value})`;
-                    bgSet = true;
-                }
-                break;
-            case 'bgcolor':
-                if (!bgSet) {
-                    document.body.style.backgroundColor = `#${value}`;
-                    bgSet = true;
-                }
-                break;
-            case 'tb':
-                linksDiv.innerHTML += `<button class="link" onclick="copyToClipboard('${value}')"><img src="img/${key}.png" alt="${key.toUpperCase()} Icon"></button>`;
-                break;
-            case 'onion':
-		linksDiv.innerHTML += `<a class="link" href="http://${value}" target="_blank"><img src="img/onion.png" alt="Onion Icon"></a>`;
-		break;
-            case 'x':
-                linksDiv.innerHTML += `<a class="link" href="https://x.com/${value}" target="_blank"><img src="img/x.png" alt="X Icon"></a>`;
-                break;
-            case 'tg':
-                linksDiv.innerHTML += `<a class="link" href="https://t.me/${value}" target="_blank"><img src="img/tg.png" alt="Telegram Icon"></a>`;
-                break;
-            case 'wa':
-                linksDiv.innerHTML += `<a class="link" href="https://wa.me/${value}" target="_blank"><img src="img/wa.png" alt="WhatsApp Icon"></a>`;
-                break;
-            case 'sn':
-                linksDiv.innerHTML += `<a class="link" href="https://signal.me/#p/${value}" target="_blank"><img src="img/sn.png" alt="Signal Icon"></a>`;
-                break;
-            case 'tel':
-                linksDiv.innerHTML += `<a class="link" href="tel:${formattedValue}" target="_blank"><img src="img/tel.png" alt="Phone Icon"></a>`;
-                break;
-            case 'mail':
-                linksDiv.innerHTML += `<a class="link" href="mailto:${value}" target="_blank"><img src="img/mail.png" alt="Mail Icon"></a>`;
-                break;
-            case 'gh':
-                linksDiv.innerHTML += `<a class="link" href="https://github.com/${value}" target="_blank"><img src="img/gh.png" alt="GitHub Icon"></a>`;
-                break;
-            case 'link':
-                linksDiv.innerHTML += `<a class="link" href="http://${value}" target="_blank"><img src="img/link.png" alt="Link Icon"></a>`;
-                break;
-            case 'ig':
-                linksDiv.innerHTML += `<a class="link" href="https://www.instagram.com/${value}/" target="_blank"><img src="img/ig.png" alt="Instagram Icon"></a>`;
-                break;
-            case 'fb':
-                linksDiv.innerHTML += `<a class="link" href="https://www.facebook.com/${value}" target="_blank"><img src="img/fb.png" alt="Facebook Icon"></a>`;
-                break;
-            case 'yt':
-                linksDiv.innerHTML += `<a class="link" href="https://www.youtube.com/@${value}" target="_blank"><img src="img/yt.png" alt="Youtube Icon"></a>`;
-                break;
-            case 'rumble':
-                linksDiv.innerHTML += `<a class="link" href="https://rumble.com/${value}" target="_blank"><img src="img/rumble.png" alt="Rumble Icon"></a>`;
-                break;  
-            case 'ens':
-                linksDiv.innerHTML += `<a class="link" href="http://${value}.limo" target="_blank"><img src="img/ens.png" alt="ENS Icon"></a>`;
-                break;  
-            case 'ipfs':
-                linksDiv.innerHTML += `<a class="link" href="https://ipfs.io/ipfs/${value}" target="_blank"><img src="img/ipfs.png" alt="IPFS Icon"></a>`;
-                break;
-            case 'nostr':
-                linksDiv.innerHTML += `<a class="link" href="nostr:${value}" target="_blank"><img src="img/nostr.png" alt="Nostr Icon"></a>`;
-                break;                                          
-            case 'pk':
-                linksDiv.innerHTML += `<a class="link" href="http://${value}./" target="_blank"><img src="img/pkdns.png" alt="pkdns Icon"></a>`;
-                break;
-            case 'matrix':
-                linksDiv.innerHTML += `<a class="link" href="https://matrix.to/#/@${value}:matrix.org" target="_blank"><img src="img/matrix.png" alt="Matrix Icon"></a>`;
-                break;
-            case 'sx':
-                linksDiv.innerHTML += `<a class="link" href="https://simplex.chat/contact#/${value.replace(/\s+/g, '')}.onion" target="_blank"><img src="img/simplex.png" alt="SimpleX Icon"></a>`;
-                break;
-            case 'bsky':
-                const bskyURL = value.includes('.') ? `https://bsky.app/profile/${value}` : `https://bsky.app/profile/${value}.bsky.social`;
-                linksDiv.innerHTML += `<a class="link" href="${bskyURL}" target="_blank"><img src="img/bsky.png" alt="Bluesky Icon"></a>`;
-                break;
-            case 'btc':
-            case 'ln':
-            case 'hns':
-            case 'eth':
-            case 'xmr':
-            case 'zec':
-            case 'bat':
-            case 'aave':
-            case 'ada':
-            case 'algo':
-            case 'apt':
-            case 'atom':
-            case 'avax':
-            case 'bch':
-            case 'bgb':
-            case 'bnb':
-            case 'chainlink':
-            case 'cro':
-            case 'dai':
-            case 'doge':
-            case 'dot':
-            case 'ena':
-            case 'etc':
-            case 'fil':
-            case 'gt':
-            case 'hbar':
-            case 'hype':
-            case 'icp':
-            case 'jup':
-            case 'kas':
-            case 'leo':
-            case 'ltc':
-            case 'mnt':
-            case 'near':
-            case 'okb':
-            case 'om':
-            case 'ondo':
-            case 'op':
-            case 'pepe':
-            case 'pi':
-            case 'pol':
-            case 'render':
-            case 'shib':
-            case 'sol':
-            case 'sui':
-            case 'tao':
-            case 'tia':
-            case 'ton':
-            case 'trx':
-            case 'uni':
-            case 'usdc':
-            case 'usde':
-            case 'usdt':
-            case 'vet':
-            case 'xlm':
-            case 'xrp':
-                currencies[key] = `<button class="currency-button" onclick="copyToClipboard('${value}')"><img src="img/${key}.png" alt="${key.toUpperCase()} Icon"></button>`;
-                break;
-            default:
-                console.warn(`Unhandled record type: ${key}`);
-        }
-    });
-
-    Object.values(currencies).forEach(button => {
-        if (button) {
-            currencyButtonsDiv.innerHTML += button;
-        }
-    });
-}
-
-
-function copyToClipboard(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert(`Copied to clipboard: ${text}`);
-        }).catch(err => {
-            console.error('Clipboard API failed, using fallback: ', err);
-            fallbackCopyToClipboard(text);
-        });
-    } else {
-        fallbackCopyToClipboard(text);
-    }
-}
-
-function fallbackCopyToClipboard(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.opacity = "0";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-
-    try {
-        document.execCommand('copy');
-        alert(`Copied to clipboard: ${text}`);
-    } catch (err) {
-        console.error('Fallback: Copy failed', err);
-    }
-
-    document.body.removeChild(textArea);
-}
-
-window.onload = fetchTXTRecords;
