@@ -127,7 +127,7 @@ async function handleHandshakeDomain(domain, path) {
 
 // Function to fetch TXT records for a domain
 async function fetchTXTRecords(domain) {
-    const url = `https://resolve.shakestation.io/dns-query?name=${domain}&type=TXT`;
+    const url = `https://api.web3dns.net/?name=${domain}&type=TXT`;
     
     try {
         const response = await fetch(url, {
