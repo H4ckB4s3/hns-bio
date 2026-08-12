@@ -11,6 +11,11 @@ Handshake TLDs empower individuals and organizations with **total ownership** an
 
 TXT record prefixes standardize how information is structured and interpreted, making it easier for services and applications to extract the intended data seamlessly.
 
+## HIP-002 Wallet Support
+hns.bio supports HIP-002 ([https://hsd-dev.org/HIPs/proposals/0002/](https://hsd-dev.org/HIPs/proposals/0002/)), a HNS standard for publishing cryptocurrency wallet addresses through a domain's .well-known/wallets/ path.
+Wallet addresses are configured through prefixed TXT records. Based on the wallet configuration, hns.bio dynamically generates the corresponding .well-known/wallets/<SYMBOL> endpoint and returns the configured wallet address.
+For example, an HNS: TXT record generates the corresponding / .well-known/wallets/HNS endpoint, allowing compatible wallets and applications to resolve the domain directly to the configured HNS wallet address.
+
 ---
 
 ## Setup Instructions
