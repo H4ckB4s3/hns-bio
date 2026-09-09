@@ -45,8 +45,7 @@ For example, an HNS: TXT record generates the corresponding / .well-known/wallet
 |------------------------------|----------------------------------|----------------------------|
 | `mail:<email>`               | Email address                    | `mail:example@example.com` |
 | `tel:<number>`               | Phone number                     | `tel:+1234567890`          |
-| `tb:<username>`              | Thunderbolt identifier           | `tb:username`              |
-| `sx:<contactcode>`           | SimpleX Chat	                  | `sx:contactcode`           |
+| `simplex:<contactcode>`      | SimpleX Chat	                  | `simplex:link_without_https://`      |
 | `matrix:<username>`          | Matrix username                  | `matrix:username`          |
 | `sn:<number>`                | Signal profile                   | `sn:+1234567890`           |
 | `wa:<number>`                | WhatsApp                         | `wa:+1234567890`           |
@@ -102,6 +101,3 @@ The primary goal of this demo is to establish a universal standard for TXT recor
 ## License
 
 No license, no limits. Free to use, abuse and improve this code however you see fit.
-
-
-
