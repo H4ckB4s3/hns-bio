@@ -1,8 +1,8 @@
-# hns.bio
+# HNS.BIO
 
-A simple decentralized hns.bio page built from TXT records on your domain (HNS, DNS, or ENS).
+A cross-domain identity layer built on HNS, DNS, and ENS TXT records
 
-No code required. Add TXT records and your hns.bio appears at `https://yourdomain.hns.bio` or via the search page at [https://hns.bio](https://hns.bio). (Use HNS resolver)
+No code required. Add TXT records and your hns.bio appears at `https://yourdomain.hns.bio` or via the search page at [https://hns.bio](https://hns.bio). 
 
 ## Setup
 
@@ -14,7 +14,7 @@ No code required. Add TXT records and your hns.bio appears at `https://yourdomai
 
 Both `:` and `=` work. Long names are the recommended form; short names work as alternatives.
 
-After saving, visit `https://yourdomain.hns.bio` (replace with your domain) or search for it on [https://hns.bio](https://hns.bio). (Use HNS Resolver)
+After saving, visit `https://yourdomain.hns.bio` (replace with your domain) or search for it on [https://hns.bio](https://hns.bio).
 
 ## Layout
 
@@ -24,7 +24,6 @@ After saving, visit `https://yourdomain.hns.bio` (replace with your domain) or s
 | `bgcolor`|             | Background color (hex)   | `bgcolor:121212`             |
 | `bg`     |             | Background image         | `bg:example.com/bg.png`      |
 | `fav`    |             | Favicon                  | `fav:example.com/icon.ico`   |
-| `css`    |             | Custom CSS file          | `css:mytheme`                |
 
 ## Communication
 
