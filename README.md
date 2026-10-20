@@ -1,103 +1,113 @@
-# HNS.BIO
-Fetches TXT records and displays them in a Linktree-style interface.
+# hns.bio
 
-# TXT Record Prefix Documentation
+A simple decentralized hns.bio page built from TXT records on your domain (HNS, DNS, or ENS).
 
-This repository provides comprehensive documentation for TXT record prefixes used with HNS/DNS/ENS domains. These prefixes facilitate standardized data interpretation, enabling clients to easily recognize and interact with on-chain and off-chain records.
+No code required. Add TXT records and your hns.bio appears at `https://yourdomain.hns.bio` or via the search page at [https://hns.bio](https://hns.bio). (Use HNS resolver)
 
-## Introduction
+## Setup
 
-Handshake TLDs empower individuals and organizations with **total ownership** and **sovereign identity** by providing immutable, censorship-resistant on-chain records. This ensures that your data is securely published without the risk of alteration or suppression by centralized entities.
+1. Open your domain manager (Namebase.io/wallet, bobwallet.org, etc.).
+2. Add a TXT record:
+   - **Type**: TXT
+   - **Name**: `@` (or leave blank)
+   - **Value**: `prefix:value` or `prefix=value`
 
-TXT record prefixes standardize how information is structured and interpreted, making it easier for services and applications to extract the intended data seamlessly.
+Both `:` and `=` work. Long names are the recommended form; short names work as alternatives.
 
-## HIP-002 Wallet Support
-hns.bio supports HIP-002 ([https://hsd-dev.org/HIPs/proposals/0002/](https://hsd-dev.org/HIPs/proposals/0002/)), a HNS standard for publishing cryptocurrency wallet addresses through a domain's .well-known/wallets/ path.
-Wallet addresses are configured through prefixed TXT records. Based on the wallet configuration, hns.bio dynamically generates the corresponding .well-known/wallets/<SYMBOL> endpoint and returns the configured wallet address.
-For example, an HNS: TXT record generates the corresponding / .well-known/wallets/HNS endpoint, allowing compatible wallets and applications to resolve the domain directly to the configured HNS wallet address.
+After saving, visit `https://yourdomain.hns.bio` (replace with your domain) or search for it on [https://hns.bio](https://hns.bio). (Use HNS Resolver)
 
----
+## Layout
 
-## Setup Instructions
+| Prefix   | Alternative | Purpose                  | Example                      |
+|----------|-------------|--------------------------|------------------------------|
+| `pfp`    |             | hns.bio picture          | `pfp:example.com/pic.png`    |
+| `bgcolor`|             | Background color (hex)   | `bgcolor:121212`             |
+| `bg`     |             | Background image         | `bg:example.com/bg.png`      |
+| `fav`    |             | Favicon                  | `fav:example.com/icon.ico`   |
+| `css`    |             | Custom CSS file          | `css:mytheme`                |
 
-1. Navigate to your domain manager (e.g., [Shakestation](https://shakestation.io), [Namebase](https://namebase.io), ...).
-2. Add a new TXT record with the following configuration:
-   - **Type**: TXT  
-   - **Name**: `@`  
-   - **Value/Data**: `<prefix>:<value>` (e.g., `link:example.com`)  
+## Communication
 
-3. After configuration, visit:  https://hackbase.hns.bio (Replace "hackbase" with your actual TLD or desired domain name) or search for SLD's (ICANN/HNS) on the index page: https://hns.bio, you can share SLD's (ICANN/HNS) in this format https://hns.bio/sld.tld.
+| Prefix     | Alternatives | Purpose     | Example                          |
+|------------|--------------|-------------|----------------------------------|
+| `mail`     |              | Email       | `mail:user@example.com`          |
+| `tel`      |              | Phone       | `tel:+1234567890`                |
+| `simplex`  | `sx`         | SimpleX     | `simplex:your-link`     |
+| `signal`   | `sn`         | Signal      | `signal:+1234567890`             |
+| `whatsapp` | `wa`         | WhatsApp    | `whatsapp:+1234567890`           |
+| `telegram` | `tg`         | Telegram    | `telegram:username`              |
+| `matrix`   |              | Matrix      | `matrix:username`                |
+
+**Signal notes**:  
+- Phone number (E.164 style, optional `+`) → links to the phone hns.bio.  
+- Encrypted username (8–64 chars, letters + numbers/`_-`) → links to the encrypted username hns.bio.
+
+**SimpleX**: The value is used directly as `https://<value>`.
+
+## Web
+
+| Prefix  | Alternatives | Purpose          | Example                |
+|---------|--------------|------------------|------------------------|
+| `url`   | `link`       | Website          | `url:example.com`      |
+| `ens`   |              | ENS name         | `ens:name.eth`         |
+| `onion` |              | Onion address    | `onion:example.onion`  |
+| `ipfs`  |              | IPFS content     | `ipfs:QmExample`       |
+| `pkdns` | `pk`         | PKDNS            | `pkdns:example`        |
+
+## Social
+
+| Prefix     | Alternatives     | Purpose   | Example                          |
+|------------|------------------|-----------|----------------------------------|
+| `x`        |                  | X         | `x:username`                     |
+| `nostr`    |                  | Nostr     | `nostr:npub1...`                 |
+| `github`   | `gh`             | GitHub    | `github:username`                |
+| `bluesky`  | `bsky`           | Bluesky   | `bluesky:username`               |
+| `instagram`| `ig`, `insta`    | Instagram | `instagram:username`             |
+| `facebook` | `fb`             | Facebook  | `facebook:username`              |
+| `opensea`  |                  | OpenSea   | `opensea:username`               |
+
+**Nostr**: You can also put a bare `npub1...` as the entire TXT record (no prefix needed).
+
+## Media
+
+| Prefix    | Alternatives | Purpose  | Example                  |
+|-----------|--------------|----------|--------------------------|
+| `youtube` | `yt`         | YouTube  | `youtube:@channelname`   |
+| `rumble`  |              | Rumble   | `rumble:channelname`     |
+
+## Wallets
+
+Clicking a wallet button copies the address.
+
+Use the short code as the prefix (both `:` and `=` work):
+
+```
+btc:bc1q...
+eth:0x...
+hns:hs1q...
+ln:lnbc...
+```
+
+Supported:  
+`btc`, `ln`, `hns`, `eth`, `xmr`, `zec`, `bat`, `aave`, `ada`, `algo`, `apt`, `atom`, `avax`, `bch`, `bgb`, `bnb`, `chainlink`, `cro`, `dai`, `doge`, `dot`, `ena`, `etc`, `fil`, `gt`, `hbar`, `hype`, `icp`, `jup`, `kas`, `leo`, `ltc`, `mnt`, `near`, `okb`, `om`, `ondo`, `op`, `pepe`, `pi`, `pol`, `render`, `shib`, `sol`, `sui`, `tao`, `tia`, `ton`, `trx`, `uni`, `usdc`, `usde`, `usdt`, `vet`, `xlm`, `xrp`
+
+**HIP-002**: Wallet addresses are also available at:  
+`https://yourdomain.hns.bio/.well-known/wallets/BTC` (uppercase symbol).
+
+**NIP-05** Nostr identifier available at:
+`https://yourdomain.hns.bio.well-known/nostr.json`
 
 
----
+## Chaining
 
-## List of Prefixes
+| Prefix | Purpose                              | Example              |
+|--------|--------------------------------------|----------------------|
+| `ext`  | Pull TXT records from another domain | `ext:otherdomain.com`|
 
-### Layout
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `pfp:<url>`                  | Profile picture URL              | `pfp:example.com/img.png`  |
-| `bgcolor:<hex>`              | Background color in HEX format   | `bgcolor:ffffff`           |
-| `bg:<url>`                   | Background image URL             | `bg:example.com/bg_img.png`|
+## Notes
 
-### Communication
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `mail:<email>`               | Email address                    | `mail:example@example.com` |
-| `tel:<number>`               | Phone number                     | `tel:+1234567890`          |
-| `simplex:<contactcode>`      | SimpleX Chat	                  | `simplex:link_without_https://`      |
-| `matrix:<username>`          | Matrix username                  | `matrix:username`          |
-| `sn:<number>`                | Signal profile                   | `sn:+1234567890`           |
-| `wa:<number>`                | WhatsApp                         | `wa:+1234567890`           |
-| `tg:<username>`              | Telegram                         | `tg:username`              |
+- Works with HNS TLDs/SLDs, ENS names, and regular DNS domains.
+- Uses public HNS resolver to fetch the records.
+- This is a demo project. Free to use, modify, and improve.
 
-### Web
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `link:<url>`                 | Redirect to a webpage            | `link:example.com`         |
-| `ens:<url>`                  | Ethereum Name Service            | `ens:vitalik.eth`          |
-| `onion:<url>`                | Onion address                    | `onion:example.onion`      |
-| `ipfs:<url>`                 | IPFS content                     | `ipfs:QmExample`           |
-| `pk:<url>`                   | pkdns page                       | `pk:example`               |
-
-### Social
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `x:<username>`               | X (formerly Twitter) profile     | `x:username`               |
-| `nostr:<npub>`               | Nostr public key                 | `nostr:npub123`            |
-| `gh:<username>`              | GitHub profile/repo              | `gh:username`              |
-| `bsky:<username>`            | Bluesky profile                  | `bsky:username`            |
-| `ig:<username>`              | Instagram profile                | `ig:username`              |
-| `fb:<username>`              | Facebook profile                 | `fb:username`              |
-
-### Media
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `yt:<username>`              | YouTube channel/URL              | `yt:@username`             |
-| `rumble:<channelname>`       | Rumble channel/URL	            | `rumble:channelname`       |
-
-### Wallet
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `btc:<address>`              | Bitcoin wallet address           | `btc:btc_address`          |
-| `hns:<address>`              | Handshake wallet address         | `hns:hns_address`          |
-| `xmr:<address>`              | Monero wallet address            | `xmr:xmr_address`          |
-| `eth:<address>`              | Ethereum wallet address          | `eth:eth_address`          |
-
-#### Compatible wallet addresses:
-btc, ln, hns, eth, xmr, zec, bat, aave, ada, algo, apt, atom, avax, bch, bgb, bnb, chainlink, cro, dai, doge, dot, ena, etc, fil, gt, hbar, hype, icp, jup, kas, leo, ltc, mnt, near, okb, om, ondo, op, pepe, pi, pol, render, shib, sol, sui, tao, tia, ton, trx, uni, usdc, usde, usdt, vet, xlm, xrp
-
-### TXT Chaining: Add External Records
-| **Prefix**                   | **Purpose**                      | **Example**                |
-|------------------------------|----------------------------------|----------------------------|
-| `ext:<url>`              | Fetch TXT records from an external TLD or SLD (HNS/ICANN)           | `ext:example.com`          |
----
-
-# Note:
-This is an experimental demo. It uses a [HNS Resolver](https://github.com/james-stevens/handshake-volume-resolver)  from [James](https://github.com/james-stevens) to fetch the TXT records. When an NS is set up, it will fetch only off-chain TXT records.. It works with Handshake HNS TLDs, HNS SLDs, HNS dSLDs, ENS domains and ICANN SLDs.
-
-The primary goal of this demo is to establish a universal standard for TXT records and pave the way for APIs supporting wallets, socials, logins,...
-
-## License
-
-No license, no limits. Free to use, abuse and improve this code however you see fit.
+More details and source: [github.com/H4ckB4s3/hns.bio](https://github.com/H4ckB4s3/hns.bio)
